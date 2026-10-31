@@ -1,6 +1,8 @@
 # GitHub Issue Triage Assistant
 
-Working local prototype for RCEL 506. Enter an issue title and description to see a preliminary Bug or Enhancement suggestion. A maintainer must review the suggestion.
+Working presentation prototype for RCEL 506. Enter an issue title and description to see a preliminary Bug or Enhancement suggestion. A maintainer must review the suggestion.
+
+Live demo: https://scikit-learn-issue-triage-lr103.streamlit.app/
 
 Source code: https://github.com/LOHITHR29/github-issue-triage-assistant-rcel506
 
@@ -35,6 +37,6 @@ The chronological split has 726 training issues and 182 test issues. The TF-IDF 
 
 ## Limits
 
-The CSV is a capped historical sample, not a repository census. The newest test split contains only five Enhancements. Saved labels may have changed after issue creation. The result does not establish reliable performance on incoming issues or other repositories. The model is a classroom prototype, not a deployed maintainer tool.
+The CSV is a capped historical sample, not a repository census. The newest test split contains only five Enhancements. Saved labels may have changed after issue creation. The result does not establish reliable performance on incoming issues or other repositories. The public app is a classroom prototype and is not integrated into a maintainer workflow.
 
 Before claiming operational value, confirm the target label mapping with the CTO, collect a date-based cohort without filtering by label, preserve label timing, and evaluate on a recent holdout containing enough examples of both classes.
