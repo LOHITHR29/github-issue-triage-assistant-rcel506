@@ -1,5 +1,7 @@
-"""Presentation demo for the scikit-learn GitHub issue triage prototype."""
+"""Public demonstration of the scikit-learn issue triage final project."""
 
+import hashlib
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -8,27 +10,33 @@ import streamlit as st
 from triage import LABELS, fit_and_evaluate, load_issues, predict_issue
 
 
-DATA = Path(__file__).parent / "data" / "scikit_learn_issues_bug_enhancement_sample.csv"
+ROOT = Path(__file__).parent
+DATA = ROOT / "data" / "scikit_learn_issues_date_cohort_labeled.csv"
+AUDIT = ROOT / "data" / "collection_audit.json"
 
 
 @st.cache_resource(show_spinner="Training the text model on the historical sample...")
-def get_result():
+def get_result(data_sha: str):
+    if hashlib.sha256(DATA.read_bytes()).hexdigest() != data_sha:
+        raise ValueError("The dataset does not match its collection audit")
     return fit_and_evaluate(load_issues(DATA))
 
 
 st.set_page_config(page_title="GitHub Issue Triage Assistant", page_icon="🦉", layout="wide")
 st.title("GitHub Issue Triage Assistant")
-st.caption("scikit-learn issue classification prototype | Lohith Regalla | RCEL 506")
+st.caption("scikit-learn issue triage | Lohith Regalla | RCEL 506")
 
 try:
-    result = get_result()
+    audit = json.loads(AUDIT.read_text())
+    result = get_result(audit["labeled_sha256"])
 except Exception as exc:
     st.error(f"The demo could not load its data: {exc}")
     st.stop()
 
 st.info(
-    "Research prototype only. The historical data was collected with fixed label caps, and the "
-    "newest test slice has just five Enhancements. Every suggestion requires maintainer review."
+    "This model suggests Bug or Feature Request for maintainer review. Training uses a "
+    f"creation-date sample of scikit-learn issues from {audit['start_month']} through {audit['end_month']}. "
+    "Other issue types still need manual triage."
 )
 
 tab_demo, tab_evidence, tab_data = st.tabs(["Try an issue", "Evaluation", "Explore the data"])
@@ -58,7 +66,7 @@ with tab_evidence:
     a, b, c = st.columns(3)
     a.metric("Training issues", result.metrics["train_count"])
     b.metric("Test issues", result.metrics["test_count"])
-    c.metric("Enhancements in test", result.metrics["test_labels"].get("Enhancement", 0))
+    c.metric("Feature Requests in test", result.metrics["test_labels"].get("Feature Request", 0))
     scores = pd.DataFrame({
         "Majority baseline": result.metrics["baseline"],
         "TF-IDF + Logistic Regression": result.metrics["model"],
@@ -70,10 +78,17 @@ with tab_evidence:
     st.dataframe(pd.DataFrame(result.metrics["model"]["confusion_matrix"],
                               index=LABELS, columns=LABELS), width="stretch")
     st.caption(f"Training ends {result.metrics['train_end']}; test starts {result.metrics['test_start']}.")
+    st.caption("Labels reflect the saved collection snapshot and may have changed after issue creation.")
 
 with tab_data:
     st.subheader("What is in the saved sample?")
-    st.write("The 908 rows are a selected historical sample, not every issue opened in the repository.")
+    st.write(
+        f"The collection contains {audit['raw_count']:,} issues created from "
+        f"{audit['start_month']} through {audit['end_month']}. The model uses "
+        f"{audit['labeled_count']:,} with exactly one target category. "
+        f"{audit['excluded']['neither_target']:,} have neither category and "
+        f"{audit['excluded']['ambiguous']:,} have both."
+    )
     years = sorted(result.issues["created_at"].dt.year.unique().tolist())
     year = st.selectbox("Creation year", ["All years"] + years)
     shown = result.issues if year == "All years" else result.issues[result.issues["created_at"].dt.year == year]

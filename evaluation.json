@@ -1,70 +1,70 @@
 {
-  "train_count": 726,
-  "test_count": 182,
+  "train_count": 677,
+  "test_count": 170,
   "train_labels": {
-    "Enhancement": 414,
-    "Bug": 312
+    "Bug": 449,
+    "Feature Request": 228
   },
   "test_labels": {
-    "Bug": 177,
-    "Enhancement": 5
+    "Bug": 119,
+    "Feature Request": 51
   },
-  "train_end": "2025-06-11T20:41:12+00:00",
-  "test_start": "2025-06-13T00:58:02+00:00",
-  "test_end": "2026-08-26T20:42:40+00:00",
+  "train_end": "2026-02-17T23:08:02+00:00",
+  "test_start": "2026-02-18T10:14:47+00:00",
+  "test_end": "2026-10-28T11:05:50+00:00",
   "model": {
-    "accuracy": 0.8462,
-    "macro_f1": 0.5886,
+    "accuracy": 0.8824,
+    "macro_f1": 0.8702,
     "per_class": {
       "Bug": {
-        "precision": 1.0,
-        "recall": 0.8418,
-        "f1": 0.9141,
-        "support": 177
+        "precision": 0.9806,
+        "recall": 0.8487,
+        "f1": 0.9099,
+        "support": 119
       },
-      "Enhancement": {
-        "precision": 0.1515,
-        "recall": 1.0,
-        "f1": 0.2632,
-        "support": 5
+      "Feature Request": {
+        "precision": 0.7313,
+        "recall": 0.9608,
+        "f1": 0.8305,
+        "support": 51
       }
     },
     "confusion_matrix": [
       [
-        149,
-        28
+        101,
+        18
       ],
       [
-        0,
-        5
+        2,
+        49
       ]
     ]
   },
   "baseline": {
-    "accuracy": 0.0275,
-    "macro_f1": 0.0267,
+    "accuracy": 0.7,
+    "macro_f1": 0.4118,
     "per_class": {
       "Bug": {
+        "precision": 0.7,
+        "recall": 1.0,
+        "f1": 0.8235,
+        "support": 119
+      },
+      "Feature Request": {
         "precision": 0.0,
         "recall": 0.0,
         "f1": 0.0,
-        "support": 177
-      },
-      "Enhancement": {
-        "precision": 0.0275,
-        "recall": 1.0,
-        "f1": 0.0535,
-        "support": 5
+        "support": 51
       }
     },
     "confusion_matrix": [
       [
-        0,
-        177
+        119,
+        0
       ],
       [
-        0,
-        5
+        51,
+        0
       ]
     ]
   }

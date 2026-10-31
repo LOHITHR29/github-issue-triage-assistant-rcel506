@@ -1,4 +1,4 @@
-"""Reproducible, repository-specific issue triage prototype."""
+"""Reproducible, repository-specific Bug versus Feature Request triage."""
 
 from __future__ import annotations
 
@@ -14,12 +14,16 @@ from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precisio
 from sklearn.pipeline import Pipeline
 
 
-LABELS = ("Bug", "Enhancement")
+LABELS = ("Bug", "Feature Request")
 TARGET_WORDS = re.compile(
-    r"\b(?:bug\s+reports?|new\s+features?|feature\s+requests?|bugs?|enhancements?|enh)\b",
+    r"\b(?:bug\s+reports?|new\s+features?|feature\s+requests?|bugs?|features?|enhancements?|enh)\b",
     flags=re.IGNORECASE,
 )
 TEMPLATE_HEADERS = re.compile(r"(?m)^\s*#{1,6}\s+[^\n]*$")
+VERSIONS_SECTION = re.compile(
+    r"(?ims)^\s*#{1,6}\s+versions?\s*$.*?(?=^\s*#{1,6}\s|\Z)"
+)
+NO_RESPONSE = re.compile(r"(?im)^\s*_?no response_?\s*$")
 SPACE = re.compile(r"\s+")
 
 
@@ -27,6 +31,8 @@ def clean_text(title: object, body: object) -> str:
     """Use only title and body, with explicit target words and common headers removed."""
     parts = [part if isinstance(part, str) else "" for part in (title, body)]
     text = "\n".join(parts)
+    text = VERSIONS_SECTION.sub(" ", text)
+    text = NO_RESPONSE.sub(" ", text)
     text = TEMPLATE_HEADERS.sub(" ", text)
     text = TARGET_WORDS.sub(" ", text)
     text = re.sub(r"(?m)^\s*[:;]\s*", " ", text)
@@ -44,7 +50,7 @@ def load_issues(path: Path) -> pd.DataFrame:
     if issues["title"].isna().any():
         raise ValueError("Issue titles must be present")
     if set(issues["issue_type"]) != set(LABELS):
-        raise ValueError("Expected exactly Bug and Enhancement labels")
+        raise ValueError("Expected exactly Bug and Feature Request labels")
     issues["created_at"] = pd.to_datetime(issues["created_at"], utc=True, errors="raise")
     issues["text"] = [clean_text(t, b) for t, b in zip(issues["title"], issues["body"])]
     if issues["text"].eq("").any():

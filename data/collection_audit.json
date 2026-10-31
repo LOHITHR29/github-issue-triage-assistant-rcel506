@@ -1,0 +1,65 @@
+{
+  "repository": "scikit-learn/scikit-learn",
+  "retrieved_at": "2026-10-31T17:09:02.682069+00:00",
+  "source": "GitHub REST issue search via gh api, creation-month queries",
+  "start_month": "2024-01",
+  "end_month": "2026-10",
+  "monthly_counts": {
+    "2024-01": 65,
+    "2024-02": 59,
+    "2024-03": 56,
+    "2024-04": 48,
+    "2024-05": 79,
+    "2024-06": 64,
+    "2024-07": 80,
+    "2024-08": 51,
+    "2024-09": 50,
+    "2024-10": 52,
+    "2024-11": 63,
+    "2024-12": 51,
+    "2025-01": 41,
+    "2025-02": 44,
+    "2025-03": 48,
+    "2025-04": 35,
+    "2025-05": 50,
+    "2025-06": 44,
+    "2025-07": 45,
+    "2025-08": 50,
+    "2025-09": 61,
+    "2025-10": 55,
+    "2025-11": 41,
+    "2025-12": 35,
+    "2026-01": 42,
+    "2026-02": 67,
+    "2026-03": 46,
+    "2026-04": 45,
+    "2026-05": 52,
+    "2026-06": 49,
+    "2026-07": 45,
+    "2026-08": 49,
+    "2026-09": 47,
+    "2026-10": 48
+  },
+  "raw_count": 1757,
+  "excluded": {
+    "ambiguous": 3,
+    "neither_target": 907
+  },
+  "labeled_count": 847,
+  "class_counts": {
+    "Bug": 568,
+    "Feature Request": 279
+  },
+  "label_mapping": {
+    "Bug": [
+      "Bug"
+    ],
+    "Feature Request": [
+      "Enhancement",
+      "New Feature"
+    ]
+  },
+  "raw_sha256": "2bdfada7751c37c25d6cb84395faf00affb8ed9b5036762ec91cdbb86c5e9fa5",
+  "labeled_sha256": "2150aac51bb817054f72e9acb04db7c7d2bddd14806510f1a6aa83994706f207",
+  "note": "Issue titles and bodies have email addresses redacted. Labels are the GitHub snapshot at retrieval, not historical label events. Cached monthly files are reused unless --refresh is supplied."
+}

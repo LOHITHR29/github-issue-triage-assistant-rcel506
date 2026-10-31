@@ -7,7 +7,7 @@ from triage import fit_and_evaluate, load_issues
 
 
 ROOT = Path(__file__).parent
-DATA = ROOT / "data" / "scikit_learn_issues_bug_enhancement_sample.csv"
+DATA = ROOT / "data" / "scikit_learn_issues_date_cohort_labeled.csv"
 REPORT = ROOT / "evaluation.json"
 
 
