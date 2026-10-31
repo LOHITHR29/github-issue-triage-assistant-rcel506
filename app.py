@@ -46,7 +46,8 @@ with tab_demo:
             suggestion = predict_issue(result, title, body)
             st.metric("Suggested label", suggestion["suggested_label"])
             st.write("Model probabilities for this text:")
-            st.bar_chart(pd.Series(suggestion["model_probabilities"]), horizontal=True)
+            for label, probability in suggestion["model_probabilities"].items():
+                st.progress(round(probability * 100), text=f"{label}: {probability:.1%}")
             st.caption("These probabilities are not calibrated reliability estimates. A maintainer makes the final choice.")
         except ValueError as exc:
             st.warning(str(exc))
@@ -77,7 +78,9 @@ with tab_data:
     year = st.selectbox("Creation year", ["All years"] + years)
     shown = result.issues if year == "All years" else result.issues[result.issues["created_at"].dt.year == year]
     counts = shown["issue_type"].value_counts().reindex(LABELS, fill_value=0)
-    st.bar_chart(counts)
+    largest = max(int(counts.max()), 1)
+    for label, count in counts.items():
+        st.progress(round(int(count) / largest * 100), text=f"{label}: {count} issues")
     st.write(f"Showing {len(shown)} issues")
     st.dataframe(shown[["issue_number", "created_at", "issue_type", "title"]].head(30),
                  hide_index=True, width="stretch")
