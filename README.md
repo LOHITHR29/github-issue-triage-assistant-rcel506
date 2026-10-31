@@ -2,6 +2,8 @@
 
 Working local prototype for RCEL 506. Enter an issue title and description to see a preliminary Bug or Enhancement suggestion. A maintainer must review the suggestion.
 
+Source code: https://github.com/LOHITHR29/github-issue-triage-assistant-rcel506
+
 ## Run the demo
 
 From this folder on a computer with Python 3.9 or newer:
@@ -14,6 +16,8 @@ python3 -m venv .venv
 ```
 
 Open the local address printed by Streamlit, usually `http://localhost:8501`.
+
+On a Mac, you can also run `zsh run_demo.command` from this folder. Its first run installs the listed packages. It serves the app on this computer only.
 
 The app trains from the bundled CSV at startup. The evaluation report is written to `evaluation.json` by `train.py`. In the app, the Evaluation tab shows the same metrics and the Explore the data tab supports a live year filter.
 
