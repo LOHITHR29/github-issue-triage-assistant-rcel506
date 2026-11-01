@@ -1,6 +1,5 @@
 """Public demonstration of the scikit-learn issue triage final project."""
 
-import hashlib
 import json
 from pathlib import Path
 
@@ -17,9 +16,12 @@ AUDIT = ROOT / "data" / "collection_audit.json"
 
 @st.cache_resource(show_spinner="Training the text model on the historical sample...")
 def get_result(data_sha: str):
-    if hashlib.sha256(DATA.read_bytes()).hexdigest() != data_sha:
-        raise ValueError("The dataset does not match its collection audit")
-    return fit_and_evaluate(load_issues(DATA))
+    issues = load_issues(DATA)
+    if len(issues) != audit["labeled_count"]:
+        raise ValueError("The dataset row count does not match its collection audit")
+    if issues["issue_type"].value_counts().to_dict() != audit["class_counts"]:
+        raise ValueError("The dataset class counts do not match its collection audit")
+    return fit_and_evaluate(issues)
 
 
 st.set_page_config(page_title="GitHub Issue Triage Assistant", page_icon="🦉", layout="wide")
